@@ -2,10 +2,14 @@ import React, {Component} from 'react'
 import moment from 'moment'
 import MessageList from '../MessageList'
 
+import InputText from '../InputText'
+import ProfileBar from '../ProfileBar'
+
 class Main extends Component{
   constructor(){
       super()
       this.state={
+        openText:false,
         messages:[{
           text:'Aprendiendo React',
           picture:'https://avatars2.githubusercontent.com/u/10110322?v=3&u=57f5fc4b049905cfe691782df19aba2708458fbd&s=400',
@@ -25,9 +29,28 @@ class Main extends Component{
       }
   }
 
+  handleOpenText(event){
+    event.preventDefault()
+    this.setState({openText:true})
+  }
+
+  renderOpenText(){
+    if(this.state.openText){
+      return  <InputText />
+    }
+  }
+
   render(){
     return (
-      <MessageList messages={this.state.messages}/>
+      <div>
+        <ProfileBar
+          picture={this.props.user.photoURL}
+          username={this.props.user.email.split('@')[0]}
+          onOpenText={this.handleOpenText}
+        />
+        {this.renderOpenText()}
+        <MessageList messages={this.state.messages}/>
+    </div>
     )
   }
 }
